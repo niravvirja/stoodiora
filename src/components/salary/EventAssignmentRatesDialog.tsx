@@ -430,7 +430,7 @@ const EventAssignmentRatesDialog: React.FC<Props> = ({ open, onOpenChange, staff
                           <Label className="font-medium text-sm col-span-1">Rate (₹)</Label>
                           <Input
                             type="number"
-                            className="col-span-3 h-10 text-sm"
+                            className="col-span-3 h-10 text-sm md:min-w-32"
                             value={Number(i.rate || 0)}
                             onChange={(e) => {
                               const v = Number(e.target.value || 0);
