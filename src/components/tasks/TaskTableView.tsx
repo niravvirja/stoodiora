@@ -48,6 +48,13 @@ const TaskTableView = ({ tasks, onEdit, onStatusChange, onUpdateTaskStatus, onDe
   return (colors as Record<string, string>)[priority] || 'text-muted-foreground';
   };
 
+  const getAmountColor = (amount: number) => {
+    if (amount === 0) return 'text-muted-foreground';
+    if (amount <= 10000) return 'text-[hsl(var(--success))]';
+    if (amount <= 100000) return 'text-[hsl(var(--warning))]';
+    return 'text-[hsl(var(--destructive))]';
+  };
+
   return (
     <>
       {/* Desktop Table View */}
@@ -58,6 +65,7 @@ const TaskTableView = ({ tasks, onEdit, onStatusChange, onUpdateTaskStatus, onDe
               <TableHead className="text-center">Task</TableHead>
               <TableHead className="text-center">Event</TableHead>
               <TableHead className="text-center">Assigned To</TableHead>
+              <TableHead className="text-center">Amount</TableHead>
               <TableHead className="text-center">Priority</TableHead>
               <TableHead className="text-center">Status</TableHead>
               <TableHead className="text-center">Due Date</TableHead>
@@ -106,6 +114,11 @@ const TaskTableView = ({ tasks, onEdit, onStatusChange, onUpdateTaskStatus, onDe
                   ) : (
                     <span className="text-xs text-muted-foreground">Unassigned</span>
                   )}
+                </TableCell>
+                <TableCell className="text-center">
+                  <span className={`text-xs font-semibold ${getAmountColor(Number(task.amount) || 0)}`}>
+                    {task.amount && Number(task.amount) > 0 ? `₹${Number(task.amount).toLocaleString()}` : '₹0'}
+                  </span>
                 </TableCell>
                 <TableCell className="text-center">
                   <span className={`text-xs font-medium ${getPriorityColor(task.priority)}`}>
@@ -248,6 +261,12 @@ const TaskTableView = ({ tasks, onEdit, onStatusChange, onUpdateTaskStatus, onDe
                   <div className="text-xs text-muted-foreground">Priority</div>
                   <div className={`text-sm font-medium ${getPriorityColor(task.priority)}`}>
                     {task.priority}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">Amount</div>
+                  <div className={`text-sm font-semibold ${getAmountColor(Number(task.amount) || 0)}`}>
+                    {task.amount && Number(task.amount) > 0 ? `₹${Number(task.amount).toLocaleString()}` : '₹0'}
                   </div>
                 </div>
                 <div>
