@@ -13,7 +13,7 @@ interface CentralizedCardProps {
   date?: string;
   description?: string;
   badges?: Array<{ label: string; color?: string }>;
-  metadata?: Array<{ icon: React.ReactNode; label?: string; value: string | React.ReactNode; isDate?: boolean }>;
+  metadata?: Array<{ icon: React.ReactNode; label?: string; value: string | React.ReactNode; isDate?: boolean; className?: string }>;
   actions?: Array<{ 
     label: string; 
     onClick: () => void; 
@@ -24,6 +24,7 @@ interface CentralizedCardProps {
   children?: React.ReactNode;
   className?: string;
   eventType?: string;
+  assignedDate?: string;
 }
 
 const CentralizedCard = ({
@@ -39,7 +40,8 @@ const CentralizedCard = ({
   actions = [],
   children,
   className,
-  eventType
+  eventType,
+  assignedDate
 }: CentralizedCardProps) => {
   
   // Check if task is overdue
@@ -87,24 +89,35 @@ const CentralizedCard = ({
               </p>
             )}
           </div>
-          <div className="flex items-center gap-2 shrink-0">
-            {badges.length > 0 && (
-              <div className="flex flex-wrap gap-1">
-                {badges.map((badge, index) => (
-                  <Badge
-                    key={index}
-                    className={cn('text-xs px-2 py-1', badge.color || 'bg-muted/50 text-muted-foreground')}
-                  >
-                    {badge.label}
-                  </Badge>
-                ))}
+          <div className="flex flex-col items-end gap-1 shrink-0">
+            {assignedDate && (
+              <div className="text-xs text-muted-foreground whitespace-nowrap">
+                Assigned: {new Date(assignedDate).toLocaleDateString('en-IN', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: '2-digit'
+                })}
               </div>
             )}
-            {status && (
-              <Badge variant={statusVariant} className="text-xs px-2 py-1">
-                {status}
-              </Badge>
-            )}
+            <div className="flex items-center gap-2">
+              {badges.length > 0 && (
+                <div className="flex flex-wrap gap-1">
+                  {badges.map((badge, index) => (
+                    <Badge
+                      key={index}
+                      className={cn('text-xs px-2 py-1', badge.color || 'bg-muted/50 text-muted-foreground')}
+                    >
+                      {badge.label}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              {status && (
+                <Badge variant={statusVariant} className="text-xs px-2 py-1">
+                  {status}
+                </Badge>
+              )}
+            </div>
           </div>
         </div>
       </CardHeader>
@@ -145,7 +158,8 @@ const CentralizedCard = ({
                     <div className={cn(
                       "text-sm font-medium px-2", 
                       item.isDate ? "whitespace-nowrap" : "break-words",
-                      typeof item.value === 'string' && item.value === '~' ? "text-muted-foreground" : ""
+                      typeof item.value === 'string' && item.value === '~' ? "text-muted-foreground" : "",
+                      item.className || ""
                     )}>
                       {item.value}
                     </div>
