@@ -265,11 +265,11 @@ const EnhancedTaskCardForStaff = ({ task, onStatusChange, onUpdateTaskStatus }: 
       icon: <Calendar01Icon className="h-3.5 w-3.5 text-primary" />,
       value: task.event ? task.event.title.length > 20 ? task.event.title.substring(0, 20) + '...' : task.event.title : '~'
     },
-    // Amount (only if significant)
-    ...(task.amount && Number(task.amount) > 0 ? [{
+    // Amount (neutral color like other metadata)
+    {
       icon: <CreditCardIcon className="h-3.5 w-3.5 text-primary" />,
-      value: `₹${Number(task.amount).toLocaleString()}`
-    }] : [])
+      value: task.amount && Number(task.amount) > 0 ? `₹${Number(task.amount).toLocaleString()}` : '₹0'
+    }
   ];
 
   return (
@@ -280,6 +280,7 @@ const EnhancedTaskCardForStaff = ({ task, onStatusChange, onUpdateTaskStatus }: 
         description={task.description}
         metadata={metadata}
         actions={[]}
+        assignedDate={task.created_at}
         className={`${isShootingTask ? "border-blue-200 bg-blue-50/30" : ""} rounded-2xl border border-border relative min-h-[500px] sm:min-h-[520px] overflow-hidden`}
       >
         {/* Single Action Button Based on Status */}
