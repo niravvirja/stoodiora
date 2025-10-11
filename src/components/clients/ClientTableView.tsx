@@ -48,7 +48,7 @@ const ClientTableView = ({ clients, clientEventCounts, onEdit, onDelete }: Clien
                     <span className="text-sm line-clamp-2 break-words">{client.address || '~'}</span>
                   </TableCell>
                   <TableCell className="text-center">
-                    <span className="text-sm font-semibold text-primary">
+                    <span className="text-sm font-medium">
                       {clientEventCounts[client.id] || 0}
                     </span>
                   </TableCell>
@@ -134,7 +134,7 @@ const ClientTableView = ({ clients, clientEventCounts, onEdit, onDelete }: Clien
                 </div>
                 <div className="min-w-0">
                   <div className="text-xs text-muted-foreground">Total Events</div>
-                  <div className="text-sm font-semibold text-primary">
+                  <div className="text-sm font-medium">
                     {clientEventCounts[client.id] || 0} Events
                   </div>
                 </div>
