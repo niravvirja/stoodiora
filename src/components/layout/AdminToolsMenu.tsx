@@ -20,6 +20,7 @@ import {
   Building06Icon
 } from 'hugeicons-react';
 import { FirmSelectorDialog } from '@/components/layout/FirmSelector';
+import { CalendarSharingDialog } from '@/components/layout/CalendarSharingDialog';
 
 interface AdminToolsMenuProps {
   className?: string;
@@ -33,6 +34,7 @@ const AdminToolsMenu = ({ className, onAvailabilityClick }: AdminToolsMenuProps)
   
   const [isOpen, setIsOpen] = useState(false);
   const [firmSelectorOpen, setFirmSelectorOpen] = useState(false);
+  const [calendarSharingOpen, setCalendarSharingOpen] = useState(false);
 
   const menuItems = [
     {
@@ -69,6 +71,11 @@ const AdminToolsMenu = ({ className, onAvailabilityClick }: AdminToolsMenuProps)
       label: 'Calendar',
       icon: Calendar01Icon,
       action: 'calendar'
+    },
+    {
+      label: 'Calendar Sharing',
+      icon: Calendar01Icon,
+      action: 'calendar-sharing'
     }
   ];
 
@@ -101,6 +108,18 @@ const AdminToolsMenu = ({ className, onAvailabilityClick }: AdminToolsMenuProps)
         });
       }
       setIsOpen(false);
+    } else if (item.action === 'calendar-sharing') {
+      if (currentFirm?.calendar_id) {
+        setCalendarSharingOpen(true);
+        setIsOpen(false);
+      } else {
+        toast({
+          title: "No Calendar Found",
+          description: "Please set up Google Calendar integration first.",
+          variant: "destructive",
+        });
+        setIsOpen(false);
+      }
     } else if (item.href) {
       navigate(item.href);
       setIsOpen(false);
@@ -148,6 +167,14 @@ const AdminToolsMenu = ({ className, onAvailabilityClick }: AdminToolsMenuProps)
       </DropdownMenu>
 
       <FirmSelectorDialog open={firmSelectorOpen} onOpenChange={setFirmSelectorOpen} />
+      
+      {currentFirm && (
+        <CalendarSharingDialog 
+          open={calendarSharingOpen} 
+          onOpenChange={setCalendarSharingOpen}
+          firmId={currentFirm.id}
+        />
+      )}
     </div>
   );
 };
